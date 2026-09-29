@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Smartphone Calculator</title>
+
+  <!-- Google Font: Inter for clean, modern mobile typography -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <!-- External Stylesheet -->
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- Main App Wrapper: Centers the calculator on the webpage -->
+  <div class="calculator-app">
+
+    <!-- Modern Smartphone-Style Calculator Chassis -->
+    <main class="phone-chassis" role="region" aria-label="Smartphone Calculator">
+
+      <!-- Calculator Display Screen Area -->
+      <section class="calculator-display" aria-live="polite">
+        <!-- Secondary Display: Formula / Expression History (e.g. 10 + 5 × 2) -->
+        <div class="expression-display" id="expressionDisplay" aria-label="Calculation expression"></div>
+
+        <!-- Primary Display: Large active number or result -->
+        <div class="primary-display" id="primaryDisplay" aria-label="Current value">0</div>
+      </section>
+
+      <!-- Calculator Keypad Grid: 4 Columns x 5 Rows (20 Circular Buttons) -->
+      <section class="keypad-grid" role="group" aria-label="Calculator Keypad">
+
+        <!-- Row 1: Function keys & Division -->
+        <button type="button" class="btn btn-function" data-action="clear" id="btnClear" aria-label="All Clear">AC</button>
+        <button type="button" class="btn btn-function" data-action="delete" id="btnDelete" aria-label="Delete last digit">⌫</button>
+        <button type="button" class="btn btn-function" data-action="percentage" id="btnPercent" aria-label="Percentage">%</button>
+        <button type="button" class="btn btn-operator" data-action="operator" data-value="÷" aria-label="Divide">÷</button>
+
+        <!-- Row 2: Numbers 7, 8, 9 & Multiplication -->
+        <button type="button" class="btn btn-number" data-action="number" data-value="7">7</button>
+        <button type="button" class="btn btn-number" data-action="number" data-value="8">8</button>
+        <button type="button" class="btn btn-number" data-action="number" data-value="9">9</button>
+        <button type="button" class="btn btn-operator" data-action="operator" data-value="×" aria-label="Multiply">×</button>
+
+        <!-- Row 3: Numbers 4, 5, 6 & Subtraction -->
+        <button type="button" class="btn btn-number" data-action="number" data-value="4">4</button>
+        <button type="button" class="btn btn-number" data-action="number" data-value="5">5</button>
+        <button type="button" class="btn btn-number" data-action="number" data-value="6">6</button>
+        <button type="button" class="btn btn-operator" data-action="operator" data-value="−" aria-label="Subtract">−</button>
+
+        <!-- Row 4: Numbers 1, 2, 3 & Addition -->
+        <button type="button" class="btn btn-number" data-action="number" data-value="1">1</button>
+        <button type="button" class="btn btn-number" data-action="number" data-value="2">2</button>
+        <button type="button" class="btn btn-number" data-action="number" data-value="3">3</button>
+        <button type="button" class="btn btn-operator" data-action="operator" data-value="+" aria-label="Add">+</button>
+
+        <!-- Row 5: 0, 00, Decimal Point & Equals -->
+        <button type="button" class="btn btn-number" data-action="number" data-value="0" aria-label="Zero">0</button>
+        <button type="button" class="btn btn-number btn-double-zero" data-action="number" data-value="00" aria-label="Double Zero">00</button>
+        <button type="button" class="btn btn-number" data-action="decimal" data-value="." aria-label="Decimal point">.</button>
+        <button type="button" class="btn btn-operator btn-equals" data-action="equals" id="btnEquals" aria-label="Equals">=</button>
+
+      </section>
+
+    </main>
+
+  </div>
+
+  <!-- External JavaScript Logic -->
+  <script src="script.js"></script>
+</body>
+</html>

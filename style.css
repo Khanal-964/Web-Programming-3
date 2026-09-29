@@ -1,0 +1,335 @@
+/* ==========================================================================
+   Smartphone Calculator Stylesheet
+   Pure CSS3 - Dark Smartphone Interface with Circular Buttons
+   ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   1. CSS Custom Properties / Color Palette
+   -------------------------------------------------------------------------- */
+:root {
+  /* Page background */
+  --page-bg-start: #14151b;
+  --page-bg-mid: #0b0c10;
+  --page-bg-end: #050608;
+
+  /* Smartphone chassis & bezel */
+  --phone-width: 360px;
+  --phone-bg: #1c1c1e;
+  --phone-border: #38383a;
+  --phone-radius: 44px;
+  --phone-screen-bg: #000000;
+
+  /* Button color themes */
+  /* Numbers (0-9, 00, .) */
+  --btn-num-bg: #2c2c2e;
+  --btn-num-text: #ffffff;
+  --btn-num-hover: #3a3a3c;
+  --btn-num-active: #48484a;
+
+  /* Function keys (AC, ⌫, %) */
+  --btn-func-bg: #48484a;
+  --btn-func-text: #ffffff;
+  --btn-func-hover: #5c5c60;
+  --btn-func-active: #6e6e72;
+
+  /* Operator keys (÷, ×, −, +, =) */
+  --btn-op-bg: #ff9f0a;
+  --btn-op-text: #ffffff;
+  --btn-op-hover: #f29302;
+  --btn-op-active: #ffffff;
+  --btn-op-active-text: #ff9f0a;
+
+  /* Display typography */
+  --text-primary: #ffffff;
+  --text-secondary: #8e8e93;
+  --text-accent: #ff9f0a;
+  --text-error: #ff453a;
+
+  /* Elevation & Shadows */
+  --shadow-phone: 
+    0 30px 70px -15px rgba(0, 0, 0, 0.8),
+    0 10px 30px rgba(0, 0, 0, 0.6),
+    inset 0 1px 2px rgba(255, 255, 255, 0.2),
+    inset 0 -1px 2px rgba(0, 0, 0, 0.8);
+  --shadow-btn: 0 4px 10px rgba(0, 0, 0, 0.35);
+
+  /* Animation timing */
+  --transition-fast: 0.12s cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-smooth: 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* --------------------------------------------------------------------------
+   2. Reset & Viewport Base Layout
+   -------------------------------------------------------------------------- */
+*, *::before, *::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI", Roboto, sans-serif;
+  min-height: 100vh;
+  background: radial-gradient(circle at 50% 20%, #1e2029 0%, var(--page-bg-mid) 50%, var(--page-bg-end) 100%);
+  color: var(--text-primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 30px 16px;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* --------------------------------------------------------------------------
+   3. Main App Container (Centering)
+   -------------------------------------------------------------------------- */
+.calculator-app {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  max-width: var(--phone-width);
+}
+
+/* --------------------------------------------------------------------------
+   4. Smartphone Chassis Mockup
+   -------------------------------------------------------------------------- */
+.phone-chassis {
+  position: relative;
+  width: 100%;
+  background: var(--phone-screen-bg);
+  border: 4px solid var(--phone-border);
+  border-radius: var(--phone-radius);
+  box-shadow: var(--shadow-phone);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  user-select: none;
+  background-clip: padding-box;
+  padding-bottom: 24px;
+}
+
+/* Subtle glossy border highlight around the phone glass */
+.phone-chassis::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: calc(var(--phone-radius) - 4px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  pointer-events: none;
+  z-index: 10;
+}
+
+/* --------------------------------------------------------------------------
+   5. Calculator Display Screen Area
+   -------------------------------------------------------------------------- */
+.calculator-display {
+  background-color: var(--phone-screen-bg);
+  padding: 36px 22px 14px 22px;
+  min-height: 160px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  align-items: flex-end;
+  text-align: right;
+  word-break: break-all;
+  overflow: hidden;
+}
+
+/* Secondary History / Expression Display */
+.expression-display {
+  min-height: 26px;
+  font-size: 18px;
+  font-weight: 400;
+  color: var(--text-secondary);
+  letter-spacing: 0.5px;
+  margin-bottom: 6px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 100%;
+  transition: color var(--transition-fast);
+}
+
+/* Primary Number / Result Display */
+.primary-display {
+  font-size: 54px;
+  font-weight: 300;
+  line-height: 1.1;
+  color: var(--text-primary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 100%;
+  letter-spacing: -1px;
+  transition: font-size 0.15s ease, color 0.15s ease;
+}
+
+/* Dynamic text scaling classes for large numbers */
+.primary-display.text-md {
+  font-size: 40px;
+}
+
+.primary-display.text-sm {
+  font-size: 30px;
+}
+
+.primary-display.text-xs {
+  font-size: 24px;
+}
+
+.primary-display.is-error {
+  color: var(--text-error);
+  font-size: 26px;
+  font-weight: 500;
+  letter-spacing: 0;
+}
+
+/* --------------------------------------------------------------------------
+   6. Keypad Grid (4 Columns x 5 Rows - 20 Circular Buttons)
+   -------------------------------------------------------------------------- */
+.keypad-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 12px;
+  padding: 12px 18px 0 18px;
+  background-color: var(--phone-screen-bg);
+}
+
+/* Base circular button styling */
+.btn {
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  border-radius: 50%;
+  border: none;
+  outline: none;
+  cursor: pointer;
+  font-family: inherit;
+  font-size: 26px;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: var(--shadow-btn);
+  transition: transform var(--transition-fast), filter var(--transition-fast), background-color var(--transition-smooth);
+  position: relative;
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* Tactile button press / touch feedback */
+.btn:hover {
+  filter: brightness(1.12);
+}
+
+.btn:active,
+.btn.pressed {
+  transform: scale(0.92);
+  filter: brightness(1.28);
+}
+
+.btn:focus-visible {
+  outline: 2px solid var(--btn-op-bg);
+  outline-offset: 2px;
+}
+
+/* --- Number Buttons (0 - 9, 00, .) --- */
+.btn-number {
+  background-color: var(--btn-num-bg);
+  color: var(--btn-num-text);
+}
+
+.btn-number:hover {
+  background-color: var(--btn-num-hover);
+}
+
+/* Double zero button typography */
+.btn-double-zero {
+  font-size: 22px;
+}
+
+/* --- Function Buttons (AC, ⌫, %) --- */
+.btn-function {
+  background-color: var(--btn-func-bg);
+  color: var(--btn-func-text);
+  font-size: 22px;
+  font-weight: 500;
+}
+
+.btn-function:hover {
+  background-color: var(--btn-func-hover);
+}
+
+/* --- Operator Buttons (÷, ×, −, +, =) --- */
+.btn-operator {
+  background-color: var(--btn-op-bg);
+  color: var(--btn-op-text);
+  font-size: 28px;
+  font-weight: 500;
+}
+
+.btn-operator:hover {
+  background-color: var(--btn-op-hover);
+}
+
+/* Active operator state (flips color like iOS/Android calculator when waiting for next number) */
+.btn-operator.is-active-operator {
+  background-color: var(--btn-op-active);
+  color: var(--btn-op-active-text);
+  box-shadow: 0 0 14px rgba(255, 159, 10, 0.6);
+}
+
+/* --------------------------------------------------------------------------
+   7. Responsive Design for Mobile Devices
+   -------------------------------------------------------------------------- */
+@media (max-width: 400px) {
+  body {
+    padding: 0;
+    align-items: flex-start;
+  }
+
+  .calculator-app {
+    max-width: 100%;
+  }
+
+  .phone-chassis {
+    border: none;
+    border-radius: 0;
+    box-shadow: none;
+    min-height: 100vh;
+    padding-bottom: 20px;
+  }
+
+  .phone-chassis::after {
+    display: none;
+  }
+
+  .calculator-display {
+    padding: 24px 16px 14px 16px;
+  }
+
+  .keypad-grid {
+    gap: 10px;
+    padding: 10px 14px 0 14px;
+  }
+
+  .btn {
+    font-size: 24px;
+  }
+
+  .btn-double-zero {
+    font-size: 20px;
+  }
+
+  .btn-function {
+    font-size: 20px;
+  }
+
+  .btn-operator {
+    font-size: 26px;
+  }
+
+  .primary-display {
+    font-size: 46px;
+  }
+}
